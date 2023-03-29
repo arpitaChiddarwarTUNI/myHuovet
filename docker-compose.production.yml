@@ -1,0 +1,175 @@
+version: "3.9"
+services:
+  nginx:
+    depends_on:
+      - frontend
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '80:80'
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: auth
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+    - "3307:3306"
+    expose:
+      - "3306"
+    volumes:
+    - ./backend/database/Create_tables.sql:/docker-entrypoint-initdb.d/Create_tables.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 5
+  frontend:
+    build:
+      dockerfile: Dockerfile.production
+      context: ./frontend
+    container_name: frontend 
+   # ports: 
+    #  - "3000:3000"
+    volumes: 
+      - /app/node_modules
+    depends_on:
+      - "auth"
+  auth:
+    build: ./backend/auth
+    container_name: auth
+    ports:
+      - "5000:5000"
+    volumes:
+      - .backend/auth:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+  patient:
+    build: ./backend/patient
+    ports:
+      - "5001:5001"
+    volumes:
+      - .backend/patient:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+  customer:
+    build: ./backend/customer
+    ports:
+      - "5002:5002"
+    volumes:
+      - .backend/customer:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+  appointment:
+    build: ./backend/appointment
+    ports:
+      - "5003:5003"
+    volumes:
+      - .backend/appointment:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  species:
+    build: ./backend/species
+    ports:
+      - "5004:5004"
+    volumes:
+      - .backend/species:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  breed:
+    build: ./backend/breed
+    ports:
+      - "5005:5005"
+    volumes:
+      - .backend/breed:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  medicine:
+    build: ./backend/medicine
+    ports:
+      - "5006:5006"
+    volumes:
+      - .backend/medicine:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  staff:
+    build: ./backend/staff
+    ports:
+      - "5007:5007"
+    volumes:
+      - .backend/staff:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  supply:
+    build: ./backend/supply
+    ports:
+      - "5008:5008"
+    volumes:
+      - .backend/supply:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  appointment_type:
+    build: ./backend/appointment_type
+    ports:
+      - "5009:5009"
+    volumes:
+      - .backend/appointment_type:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  examinationtype:
+    build: ./backend/examinationtype
+    ports:
+      - "5010:5010"
+    volumes:
+      - .backend/examinationtype:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  diagnosis:
+    build: ./backend/diagnosis
+    ports:
+      - "5011:5011"
+    volumes:
+      - .backend/diagnosis:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  template:
+    build: ./backend/template
+    ports:
+      - "5012:5012"
+    volumes:
+      - .backend/template:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  billing:
+    build: ./backend/billing
+    ports:
+      - "5013:5013"
+    volumes:
+      - .backend/billing:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy

@@ -1,0 +1,228 @@
+basePath: /
+definitions:
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.DiagnosisAddJSON:
+    properties:
+      code:
+        example: abc
+        type: string
+      name:
+        example: fever
+        type: string
+    type: object
+  models.DiagnosisDB:
+    properties:
+      code:
+        $ref: '#/definitions/sql.NullString'
+      id:
+        type: integer
+      name:
+        example: fever
+        type: string
+    type: object
+  models.DiagnosisJSON:
+    properties:
+      code:
+        example: abc
+        type: string
+      id:
+        type: integer
+      name:
+        example: fever
+        type: string
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+  sql.NullString:
+    properties:
+      string:
+        type: string
+      valid:
+        description: Valid is true if String is not NULL
+        type: boolean
+    type: object
+host: localhost:5006
+info:
+  contact: {}
+  description: |-
+    This App is used to control the diagnosis. It can:
+    - Add a new diagnosis
+    - Get the diagnosis
+    - Delete the diagnosis
+    - Modify the diagnosis
+  title: Huovet diagnosis API
+  version: "1.0"
+paths:
+  /diagnosis/addDiagnosis:
+    post:
+      consumes:
+      - application/json
+      description: Insert new Diagnosis to the Diagnosis table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DiagnosisAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DiagnosisJSON'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new Diagnosis to database
+      tags:
+      - Diagnosis
+  /diagnosis/deleteDiagnosis/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the Diagnosis.
+      parameters:
+      - description: Diagnosis ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Diagnosis information
+      tags:
+      - Diagnosis
+  /diagnosis/getAllDiagnosis/:
+    get:
+      consumes:
+      - application/json
+      description: Return the all Diagnosis and releated breeds
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DiagnosisDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Returns all Diagnosis
+      tags:
+      - Diagnosis
+  /diagnosis/getDiagnosis/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the Diagnosis.
+      parameters:
+      - description: Diagnosis ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DiagnosisDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return Diagnosis information
+      tags:
+      - Diagnosis
+  /diagnosis/modifyDiagnosis:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the Diagnosis.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DiagnosisJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Diagnosis information
+      tags:
+      - Diagnosis
+schemes:
+- http
+swagger: "2.0"

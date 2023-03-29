@@ -1,0 +1,361 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to control the medicine. It can:\n- Add a new medicine\n- Get the medicine\n- Delete the medicine\n- Modify the medicine",
+        "title": "Huovet medicine API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5006",
+    "basePath": "/",
+    "paths": {
+        "/medicine/addMedicine": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Insert new Medicine to the Medicine table in Huovet schema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Add new Medicine to database",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MedicineAddJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MedicineJSON"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine/deleteMedicine/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove all the information of the Medicine.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Delete Medicine information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Medicine ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Deleting fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteFAilResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine/getAllMedicine/": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the all Medicine and releated breeds",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Returns all Medicine",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MedicineDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine/getMedicine/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of the Medicine.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Return Medicine information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Medicine ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MedicineDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine/modifyMedicine": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the information of the Medicine.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Update Medicine information",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MedicineJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.DeleteFAilResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "deleting fail"
+                }
+            }
+        },
+        "models.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "delete success"
+                }
+            }
+        },
+        "models.MedicineAddJSON": {
+            "type": "object",
+            "properties": {
+                "active_substance": {
+                    "type": "string",
+                    "example": "ibuprofein"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "burana"
+                },
+                "strength": {
+                    "type": "string",
+                    "example": "400 mg"
+                },
+                "unit": {
+                    "type": "string",
+                    "example": "ml"
+                }
+            }
+        },
+        "models.MedicineDB": {
+            "type": "object",
+            "properties": {
+                "active_substance": {
+                    "type": "string",
+                    "example": "ibuprofein"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "burana"
+                },
+                "strength": {
+                    "type": "string",
+                    "example": "400 mg"
+                },
+                "unit": {
+                    "type": "string",
+                    "example": "ml"
+                }
+            }
+        },
+        "models.MedicineJSON": {
+            "type": "object",
+            "properties": {
+                "active_substance": {
+                    "type": "string",
+                    "example": "ibuprofein"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "burana"
+                },
+                "strength": {
+                    "type": "string",
+                    "example": "400 mg"
+                },
+                "unit": {
+                    "type": "string",
+                    "example": "ml"
+                }
+            }
+        },
+        "models.SearchFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "searching fail"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "update success"
+                }
+            }
+        }
+    }
+}

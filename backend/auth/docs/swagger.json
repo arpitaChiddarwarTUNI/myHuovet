@@ -1,0 +1,288 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to authenticate the user. It can:\n- Register a new user\n- Login with user\n- Get the information of the logged in user\n- Log out of the user",
+        "title": "Huovet authentication API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "This endpoint allows the user to log in. When the user logs in, a JWT is created in the cookie.\nThe cookie is valid for 24 hours.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login with user",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginSuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Incorrect password",
+                        "schema": {
+                            "$ref": "#/definitions/models.IncorrectPasswordResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginFailResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "description": "Log out of the user and remove the cookie.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User logout",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.LogoutResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Add a new user to database. Calculates a hash value from the user's password,\nwhich is stored in the database instead of the password.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "register a new user",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterSuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Email is already in use",
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of the logged in user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Return user information",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "401": {
+                        "description": "Unathenticated",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.IncorrectPasswordResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "incorrect password"
+                }
+            }
+        },
+        "models.LoginFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "login fail"
+                }
+            }
+        },
+        "models.LoginRequestBody": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "testi@tuni.fi"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "qwerty"
+                }
+            }
+        },
+        "models.LoginSuccessResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "login success"
+                }
+            }
+        },
+        "models.LogoutResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "logout success"
+                }
+            }
+        },
+        "models.RegisterRequestBody": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "testi@tuni.fi"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "Elon"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Musk"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "qwerty"
+                }
+            }
+        },
+        "models.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "email is already in use"
+                }
+            }
+        },
+        "models.RegisterSuccessResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "register success"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "testi@tuni.fi"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "Elon"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Musk"
+                }
+            }
+        },
+        "models.UserNotFoundResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "user not found"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,602 @@
+basePath: /
+definitions:
+  models.AddResponse:
+    properties:
+      message:
+        example: add success
+        type: string
+    type: object
+  models.AlreadyBilledResponse:
+    properties:
+      message:
+        example: appointment is already billed
+        type: string
+    type: object
+  models.AppointmentAddJSON:
+    properties:
+      anamnesis:
+        example: example
+        type: string
+      appointment_type_id:
+        example: 1
+        type: integer
+      arrived:
+        example: true
+        type: boolean
+      billed:
+        example: false
+        type: boolean
+      diagnosis:
+        items:
+          $ref: '#/definitions/models.DiagnosedJSON'
+        type: array
+      ending_date:
+        example: 2022-10-21T10:00:00
+        type: string
+      examinations:
+        items:
+          $ref: '#/definitions/models.ExaminationJSON'
+        type: array
+      length:
+        example: 2
+        type: integer
+      operations:
+        items:
+          $ref: '#/definitions/models.ExaminationJSON'
+        type: array
+      prescriptions:
+        items:
+          $ref: '#/definitions/models.PrescribedJSON'
+        type: array
+      staff_id:
+        example: 1
+        type: integer
+      starting_date:
+        example: 2022-10-19T10:00:00
+        type: string
+      status:
+        example: example
+        type: string
+      treatment:
+        example: example
+        type: string
+      useds:
+        items:
+          $ref: '#/definitions/models.UsedJSON'
+        type: array
+    type: object
+  models.AppointmentDB:
+    properties:
+      anamnesis:
+        $ref: '#/definitions/sql.NullString'
+      appointment_type_id:
+        example: 1
+        type: integer
+      arrived:
+        example: true
+        type: boolean
+      billed:
+        example: false
+        type: boolean
+      customer_id:
+        example: 1
+        type: integer
+      date_of_birth:
+        $ref: '#/definitions/sql.NullString'
+      ending_date:
+        $ref: '#/definitions/sql.NullString'
+      id:
+        type: integer
+      length:
+        example: 3
+        type: integer
+      name:
+        example: musti
+        type: string
+      patient_id:
+        example: 1
+        type: integer
+      sex:
+        example: male
+        type: string
+      staff_id:
+        example: 1
+        type: integer
+      starting_date:
+        example: 2022-10-19T10:00:00
+        type: string
+      status:
+        $ref: '#/definitions/sql.NullString'
+      treatment:
+        $ref: '#/definitions/sql.NullString'
+    type: object
+  models.AppointmentJSON:
+    properties:
+      anamnesis:
+        example: example
+        type: string
+      appointment_type_id:
+        example: 1
+        type: integer
+      arrived:
+        example: true
+        type: boolean
+      billed:
+        example: false
+        type: boolean
+      diagnosis:
+        items:
+          $ref: '#/definitions/models.DiagnosedJSON'
+        type: array
+      ending_date:
+        example: 2022-10-20T10:00:00
+        type: string
+      examinations:
+        items:
+          $ref: '#/definitions/models.ExaminationJSON'
+        type: array
+      id:
+        type: integer
+      length:
+        example: 2
+        type: integer
+      operations:
+        items:
+          $ref: '#/definitions/models.ExaminationJSON'
+        type: array
+      prescriptions:
+        items:
+          $ref: '#/definitions/models.PrescribedJSON'
+        type: array
+      staff_id:
+        example: 1
+        type: integer
+      starting_date:
+        example: 2022-10-19T10:00:00
+        type: string
+      status:
+        example: example
+        type: string
+      treatment:
+        example: example
+        type: string
+      useds:
+        items:
+          $ref: '#/definitions/models.UsedJSON'
+        type: array
+    type: object
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.DiagnosedJSON:
+    properties:
+      diagnosis_id:
+        type: integer
+      info_text:
+        type: string
+    type: object
+  models.ExaminationJSON:
+    properties:
+      examination_type_id:
+        type: integer
+      result:
+        type: string
+    type: object
+  models.GetAppointmentDB:
+    properties:
+      anamnesis:
+        $ref: '#/definitions/sql.NullString'
+      appointment_type_id:
+        example: 1
+        type: integer
+      arrived:
+        example: true
+        type: boolean
+      billed:
+        example: false
+        type: boolean
+      customer_id:
+        example: 1
+        type: integer
+      date_of_birth:
+        $ref: '#/definitions/sql.NullString'
+      diagnosis:
+        items:
+          $ref: '#/definitions/models.GetDiagnosed'
+        type: array
+      ending_date:
+        $ref: '#/definitions/sql.NullString'
+      examinations:
+        items:
+          $ref: '#/definitions/models.GetExamination'
+        type: array
+      id:
+        type: integer
+      length:
+        example: 3
+        type: integer
+      name:
+        example: musti
+        type: string
+      operations:
+        items:
+          $ref: '#/definitions/models.GetExamination'
+        type: array
+      patient_id:
+        example: 1
+        type: integer
+      prescriptions:
+        items:
+          $ref: '#/definitions/models.GetPrescribed'
+        type: array
+      sex:
+        example: male
+        type: string
+      staff_id:
+        example: 1
+        type: integer
+      starting_date:
+        example: 2022-10-19T10:00:00
+        type: string
+      status:
+        $ref: '#/definitions/sql.NullString'
+      treatment:
+        $ref: '#/definitions/sql.NullString'
+      useds:
+        items:
+          $ref: '#/definitions/models.GetUsed'
+        type: array
+    type: object
+  models.GetDiagnosed:
+    properties:
+      code:
+        example: 13
+        type: integer
+      diagnosis_id:
+        example: 2
+        type: integer
+      info_text:
+        example: Kova kuume
+        type: string
+      name:
+        example: kuume
+        type: string
+    type: object
+  models.GetExamination:
+    properties:
+      category:
+        example: examination or operation
+        type: string
+      examination_type_id:
+        example: 2
+        type: integer
+      examination_type_name:
+        example: röntgen
+        type: string
+      location:
+        example: tampere
+        type: string
+      price:
+        example: 25
+        type: number
+      result:
+        example: Riiki on
+        type: string
+    type: object
+  models.GetPrescribed:
+    properties:
+      amount:
+        example: 3
+        type: integer
+      dosage:
+        example: 2
+        type: integer
+      medicine_id:
+        example: 1
+        type: integer
+      name:
+        example: burana
+        type: string
+      unit:
+        example: g
+        type: string
+    type: object
+  models.GetUsed:
+    properties:
+      amount:
+        example: 1
+        type: integer
+      name:
+        example: koiran ruoka
+        type: string
+      price:
+        example: 4.5
+        type: number
+      supplies_id:
+        example: 2
+        type: integer
+      type:
+        example: food
+        type: string
+      unit:
+        example: pcs
+        type: string
+    type: object
+  models.PrescribedJSON:
+    properties:
+      amount:
+        type: integer
+      dosage:
+        type: integer
+      medicine_id:
+        type: integer
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+  models.UsedJSON:
+    properties:
+      amount:
+        type: integer
+      supplies_id:
+        type: integer
+    type: object
+  sql.NullString:
+    properties:
+      string:
+        type: string
+      valid:
+        description: Valid is true if String is not NULL
+        type: boolean
+    type: object
+host: localhost:5003
+info:
+  contact: {}
+  description: |-
+    This App is used to control the appointment. It can:
+    - Add a new appointment
+    - Get the appointment by id
+    - Get all appointments
+    - Get all customer appintment by customerId
+    - Delete the appointment
+    - Modify the appointment
+    - Set the appointment billed field to true
+  title: Huovet appointment API
+  version: "1.0"
+paths:
+  /appointment/addAppointment/{patientId}:
+    post:
+      consumes:
+      - application/json
+      description: Insert new appointment to the appointment table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.AppointmentAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Add success
+          schema:
+            $ref: '#/definitions/models.AddResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new appointment to database
+      tags:
+      - Appointment
+  /appointment/billedAppointment/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update the billed field to true.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update appointment billed field to true
+      tags:
+      - Appointment
+  /appointment/customerAppointments/{customerId}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of customer all appointments.
+      parameters:
+      - description: Customer ID
+        in: path
+        name: customerId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AppointmentDB'
+            type: array
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return customer all appointments information
+      tags:
+      - Appointment
+  /appointment/deleteAppointment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the appointment.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete appointment information
+      tags:
+      - Appointment
+  /appointment/getAppointment/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the appointment.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAppointmentDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return appointment information
+      tags:
+      - Appointment
+  /appointment/listAllAppointment:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of all appointments.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AppointmentDB'
+            type: array
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return array of all appointments information
+      tags:
+      - Appointment
+  /appointment/modifyAppointment:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the appointment.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.AppointmentJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "400":
+          description: appointment is already billed
+          schema:
+            $ref: '#/definitions/models.AlreadyBilledResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update appointment information
+      tags:
+      - Appointment
+schemes:
+- http
+swagger: "2.0"

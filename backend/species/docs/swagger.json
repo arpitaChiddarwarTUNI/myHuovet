@@ -1,0 +1,312 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to interact with species. It can:\n- Create new species\n- remove species\n- Modify existing species\n- Get species\n- Get all species and releated breeds",
+        "title": "Huovet species API",
+        "contact": {},
+        "version": "0.1"
+    },
+    "host": "localhost:5004",
+    "basePath": "/",
+    "paths": {
+        "/species/addSpecies": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Insert new species to the species table in Huovet schema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "species"
+                ],
+                "summary": "Add new species to database",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SpeciesJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SpeciesDB"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/species/deleteSpecies/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove all the information of the species.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "species"
+                ],
+                "summary": "Delete species information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Species ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Deleting fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteFAilResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/species/getSpecies/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of the species.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "species"
+                ],
+                "summary": "Return species information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "species ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SpeciesDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/species/getSpeciesAll/": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the all species and releated breeds",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "species"
+                ],
+                "summary": "Returns all species",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SpeciesDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/species/modifySpecies": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the information of the species.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "species"
+                ],
+                "summary": "Update species information",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SpeciesDB"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.DeleteFAilResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "deleting fail"
+                }
+            }
+        },
+        "models.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "delete success"
+                }
+            }
+        },
+        "models.SearchFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "searching fail"
+                }
+            }
+        },
+        "models.SpeciesDB": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Dog"
+                }
+            }
+        },
+        "models.SpeciesJSON": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Dog"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "update success"
+                }
+            }
+        }
+    }
+}

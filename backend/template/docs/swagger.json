@@ -1,0 +1,374 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to control the template. It can:\n- Add a new template\n- Delete the template\n- Modify the template\n- Get all template\n- Get templates by appointmentTypeId\n- Get templates by templateId",
+        "title": "Huovet template API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5010",
+    "basePath": "/",
+    "paths": {
+        "/template/addTemplate": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Insert new template to the template table in Huovet schema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Template"
+                ],
+                "summary": "Add new template to database",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TemplateAddJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Template"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/template/deleteTemplate/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove all the information of the template.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Template"
+                ],
+                "summary": "Delete template information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Template ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Deleting fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteFAilResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/template/getAllTemplate": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all the information of the template.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Template"
+                ],
+                "summary": "Get all template information",
+                "responses": {
+                    "200": {
+                        "description": "Search success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Template"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "searching fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/template/getTemplate/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of the Template.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Template"
+                ],
+                "summary": "Return Template information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Template ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Template"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/template/getTemplateByAppointmentId/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the information of the template by appointmentId.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Template"
+                ],
+                "summary": "Get template information by appointmentId",
+                "responses": {
+                    "200": {
+                        "description": "Search success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Template"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "searching fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/template/modifyTemplate": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the information of the template.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Template"
+                ],
+                "summary": "Update template information",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Template"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.DeleteFAilResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "deleting fail"
+                }
+            }
+        },
+        "models.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "delete success"
+                }
+            }
+        },
+        "models.SearchFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "searching fail"
+                }
+            }
+        },
+        "models.Template": {
+            "type": "object",
+            "properties": {
+                "appointment_type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "template_text": {
+                    "type": "string",
+                    "example": "testi"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "treatment"
+                }
+            }
+        },
+        "models.TemplateAddJSON": {
+            "type": "object",
+            "properties": {
+                "appointment_type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "template_text": {
+                    "type": "string",
+                    "example": "testi"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "treatment"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "update success"
+                }
+            }
+        }
+    }
+}

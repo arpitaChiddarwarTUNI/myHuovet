@@ -1,0 +1,247 @@
+basePath: /
+definitions:
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.Template:
+    properties:
+      appointment_type_id:
+        example: 1
+        type: integer
+      id:
+        type: integer
+      template_text:
+        example: testi
+        type: string
+      type:
+        example: treatment
+        type: string
+    type: object
+  models.TemplateAddJSON:
+    properties:
+      appointment_type_id:
+        example: 1
+        type: integer
+      template_text:
+        example: testi
+        type: string
+      type:
+        example: treatment
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+host: localhost:5010
+info:
+  contact: {}
+  description: |-
+    This App is used to control the template. It can:
+    - Add a new template
+    - Delete the template
+    - Modify the template
+    - Get all template
+    - Get templates by appointmentTypeId
+    - Get templates by templateId
+  title: Huovet template API
+  version: "1.0"
+paths:
+  /template/addTemplate:
+    post:
+      consumes:
+      - application/json
+      description: Insert new template to the template table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.TemplateAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Template'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new template to database
+      tags:
+      - Template
+  /template/deleteTemplate/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the template.
+      parameters:
+      - description: Template ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete template information
+      tags:
+      - Template
+  /template/getAllTemplate:
+    get:
+      consumes:
+      - application/json
+      description: Get all the information of the template.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search success
+          schema:
+            items:
+              $ref: '#/definitions/models.Template'
+            type: array
+        "400":
+          description: searching fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all template information
+      tags:
+      - Template
+  /template/getTemplate/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the Template.
+      parameters:
+      - description: Template ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Template'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return Template information
+      tags:
+      - Template
+  /template/getTemplateByAppointmentId/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the information of the template by appointmentId.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search success
+          schema:
+            items:
+              $ref: '#/definitions/models.Template'
+            type: array
+        "400":
+          description: searching fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get template information by appointmentId
+      tags:
+      - Template
+  /template/modifyTemplate:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the template.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Template'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update template information
+      tags:
+      - Template
+schemes:
+- http
+swagger: "2.0"

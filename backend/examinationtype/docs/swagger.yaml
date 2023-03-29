@@ -1,0 +1,223 @@
+basePath: /
+definitions:
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.ExaminationtypeAddJSON:
+    properties:
+      category:
+        example: examination
+        type: string
+      location:
+        example: Tampere
+        type: string
+      name:
+        example: check
+        type: string
+      price:
+        example: 9.2
+        type: number
+    type: object
+  models.ExaminationtypeDB:
+    properties:
+      category:
+        example: examination
+        type: string
+      id:
+        type: integer
+      location:
+        example: Tampere
+        type: string
+      name:
+        example: check
+        type: string
+      price:
+        example: 9.2
+        type: number
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+host: localhost:5010
+info:
+  contact: {}
+  description: |-
+    This App is used to control the examinationType. It can:
+    - Add a new examinationType
+    - Get the examinationType
+    - Delete the examinationType
+    - Modify the examinationType
+  title: Huovet examinationType API
+  version: "1.0"
+paths:
+  /examinationtype/addExaminationtype:
+    post:
+      consumes:
+      - application/json
+      description: Insert new Examinationtype to the Examinationtype table in Huovet
+        schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ExaminationtypeAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ExaminationtypeDB'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new Examinationtype to database
+      tags:
+      - Examinationtype
+  /examinationtype/deleteExaminationtype/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the Examinationtype.
+      parameters:
+      - description: Examinationtype ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Examinationtype information
+      tags:
+      - Examinationtype
+  /examinationtype/getAllExaminationtype/:
+    get:
+      consumes:
+      - application/json
+      description: Return the all Examinationtype and releated breeds
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ExaminationtypeDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Returns all Examinationtype
+      tags:
+      - Examinationtype
+  /examinationtype/getExaminationtype/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the Examinationtype.
+      parameters:
+      - description: Examinationtype ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ExaminationtypeDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return Examinationtype information
+      tags:
+      - Examinationtype
+  /examinationtype/modifyExaminationtype:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the Examinationtype.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ExaminationtypeDB'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Examinationtype information
+      tags:
+      - Examinationtype
+schemes:
+- http
+swagger: "2.0"

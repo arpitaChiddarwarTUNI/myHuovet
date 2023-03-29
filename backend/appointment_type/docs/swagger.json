@@ -1,0 +1,274 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to control the appointmentType. It can:\n- Add a new appointmentType\n- Delete the appointmentType\n- Modify the appointmentType\n- Get all appointmentType",
+        "title": "Huovet appointmentType API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5009",
+    "basePath": "/",
+    "paths": {
+        "/appointmentType/addAppointmentType": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Insert new appointmentType to the supplies table in Huovet schema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AppointmentType"
+                ],
+                "summary": "Add new appointmentType to database",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AppointmentTypeAddJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.AppointmentType"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointmentType/deleteAppointmentType/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove all the information of the appointmentType.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AppointmentType"
+                ],
+                "summary": "Delete appointmentType information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "AppointmentType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Deleting fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteFAilResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointmentType/getAllAppointmentType": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all the information of the appointmentTypes.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AppointmentType"
+                ],
+                "summary": "Get all appointmentType information",
+                "responses": {
+                    "200": {
+                        "description": "Search success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AppointmentType"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "searching fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointmentType/modifyAppointmentType": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the information of the appointmentType.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AppointmentType"
+                ],
+                "summary": "Update appointmentType information",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AppointmentType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.AppointmentType": {
+            "type": "object",
+            "properties": {
+                "default_length": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "tarkistus"
+                }
+            }
+        },
+        "models.AppointmentTypeAddJSON": {
+            "type": "object",
+            "properties": {
+                "default_length": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "name": {
+                    "type": "string",
+                    "example": "laastari"
+                }
+            }
+        },
+        "models.DeleteFAilResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "deleting fail"
+                }
+            }
+        },
+        "models.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "delete success"
+                }
+            }
+        },
+        "models.SearchFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "searching fail"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "update success"
+                }
+            }
+        }
+    }
+}

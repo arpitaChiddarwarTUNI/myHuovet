@@ -1,0 +1,226 @@
+basePath: /
+definitions:
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.Supply:
+    properties:
+      id:
+        type: integer
+      number:
+        example: P001
+        type: string
+      name:
+        example: laastari
+        type: string
+      price:
+        example: 3.5
+        type: number
+      type:
+        example: medicine
+        type: string
+      unit:
+        example: ml
+        type: string
+    type: object
+  models.SupplyAddJSON:
+    properties:
+      name:
+        example: laastari
+        type: string
+      price:
+        example: 3.5
+        type: number
+      type:
+        example: medicine
+        type: string
+      unit:
+        example: ml
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+host: localhost:5008
+info:
+  contact: {}
+  description: |-
+    This App is used to control the supply. It can:
+    - Add a new supply
+    - Delete the supply
+    - Modify the supply
+    - Get all supplies
+  title: Huovet supply API
+  version: "1.0"
+paths:
+  /supply/addSupply:
+    post:
+      consumes:
+      - application/json
+      description: Insert new supply to the supplies table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SupplyAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Supply'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new supply to database
+      tags:
+      - Supply
+  /supply/deleteSupply/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the supply.
+      parameters:
+      - description: Supply ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete supply information
+      tags:
+      - Supply
+  /supply/getAllSupplies:
+    get:
+      consumes:
+      - application/json
+      description: Get all the information of the supplies.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search success
+          schema:
+            items:
+              $ref: '#/definitions/models.Supply'
+            type: array
+        "400":
+          description: searching fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all supplies information
+      tags:
+      - Supply
+  /supply/modifySupply:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the supply.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Supply'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update supply information
+      tags:
+      - Supply
+  /supply/getAllSuppliesByParams:
+    post:
+      consumes:
+      - application/json
+      description: func for getting the list of all supplies based on supplies number or name.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SupplyGetJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search success
+          schema:
+            items:
+              $ref: '#/definitions/models.Supply'
+            type: array
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: func for getting the list of all supplies based on supplies number or name.
+      tags:
+      - Supply
+schemes:
+- http
+swagger: "2.0"

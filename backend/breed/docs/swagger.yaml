@@ -1,0 +1,212 @@
+basePath: /
+definitions:
+  models.BreedBodyJSON:
+    properties:
+      average_weight:
+        example: 11000
+        type: integer
+      name:
+        example: dachshund
+        type: string
+      species_id:
+        example: 1
+        type: integer
+    type: object
+  models.BreedDB:
+    properties:
+      average_weight:
+        $ref: '#/definitions/sql.NullInt64'
+      id:
+        type: integer
+      name:
+        example: Dog
+        type: string
+      species_id:
+        example: 1
+        type: integer
+    type: object
+  models.BreedJSON:
+    properties:
+      average_weight:
+        example: 300
+        type: integer
+      id:
+        type: integer
+      name:
+        example: dachshund
+        type: string
+      species_id:
+        example: 1
+        type: integer
+    type: object
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+  sql.NullInt64:
+    properties:
+      int64:
+        type: integer
+      valid:
+        description: Valid is true if Int64 is not NULL
+        type: boolean
+    type: object
+host: localhost:5005
+info:
+  contact: {}
+  description: |-
+    This App is used to interact with breed. It can:
+    - Create new breed
+    - remove breed
+    - Modify existing breed
+    - Get breed
+  title: Huovet breed API
+  version: "0.1"
+paths:
+  /breed/addBreed:
+    post:
+      consumes:
+      - application/json
+      description: Insert new breed to the breed table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BreedBodyJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BreedDB'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new breed to database
+      tags:
+      - breed
+  /breed/deleteBreed/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the breed.
+      parameters:
+      - description: Breed ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete breed information
+      tags:
+      - breed
+  /breed/getBreed/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the breed.
+      parameters:
+      - description: breed ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BreedDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return breed information
+      tags:
+      - breed
+  /breed/modifyBreed:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the breed.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BreedJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update breed information
+      tags:
+      - breed
+schemes:
+- http
+swagger: "2.0"

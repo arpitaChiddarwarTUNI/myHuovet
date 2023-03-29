@@ -1,0 +1,315 @@
+basePath: /
+definitions:
+  models.CreateCustomerBody:
+    properties:
+      email:
+        example: testi@tuni.fi
+        type: string
+      first_name:
+        example: Elon
+        type: string
+      last_name:
+        example: Musk
+        type: string
+      municipality:
+        example: Tampere
+        type: string
+      phone_number:
+        example: +358 123456789
+        type: string
+      ssn:
+        example: 010100-123A
+        type: string
+      street_address:
+        example: exampleavenue 2
+        type: string
+      zip_code:
+        example: "33720"
+        type: string
+    type: object
+  models.CreateSuccessfulResponse:
+    properties:
+      message:
+        example: Create successful
+        type: string
+    type: object
+  models.Customer:
+    properties:
+      email:
+        example: testi@tuni.fi
+        type: string
+      first_name:
+        example: Elon
+        type: string
+      id:
+        example: 1
+        type: integer
+      last_name:
+        example: Musk
+        type: string
+      municipality:
+        example: Tampere
+        type: string
+      phone_number:
+        example: +358 123456789
+        type: string
+      ssn:
+        example: 010100-123A
+        type: string
+      street_address:
+        example: exampleavenue 2
+        type: string
+      zip_code:
+        example: "33720"
+        type: string
+    type: object
+  models.CustomerAlreadyExistsResponse:
+    properties:
+      message:
+        example: customer already exists
+        type: string
+    type: object
+  models.CustomerDB:
+    properties:
+      email:
+        $ref: '#/definitions/sql.NullString'
+      first_name:
+        example: Elon
+        type: string
+      id:
+        example: 1
+        type: integer
+      last_name:
+        example: Musk
+        type: string
+      municipality:
+        $ref: '#/definitions/sql.NullString'
+      phone_number:
+        $ref: '#/definitions/sql.NullString'
+      ssn:
+        $ref: '#/definitions/sql.NullString'
+      street_address:
+        $ref: '#/definitions/sql.NullString'
+      zip_code:
+        $ref: '#/definitions/sql.NullString'
+    type: object
+  models.CustomerNotFoundResponse:
+    properties:
+      message:
+        example: customer not found
+        type: string
+    type: object
+  models.CustomerRemovedResponse:
+    properties:
+      message:
+        example: remove successful
+        type: string
+    type: object
+  models.CustomerSearchBody:
+    properties:
+      search:
+        example: Musk
+        type: string
+    type: object
+  models.ModifyFailureResponse:
+    properties:
+      message:
+        example: modify successful
+        type: string
+    type: object
+  models.ModifySuccessfulResponse:
+    properties:
+      message:
+        example: modify successful
+        type: string
+    type: object
+  models.Patient:
+    properties:
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Muppe
+        type: string
+    type: object
+  sql.NullString:
+    properties:
+      string:
+        type: string
+      valid:
+        description: Valid is true if String is not NULL
+        type: boolean
+    type: object
+host: localhost:5002
+info:
+  contact: {}
+  description: |-
+    This App is used to interact with customers. It can:
+    - Create new customers
+    - remove customers
+    - Modify existing customers
+    - Get customers
+  title: Huovet customer API
+  version: "0.1"
+paths:
+  /customer/{id}/patients/:
+    get:
+      consumes:
+      - application/json
+      description: this endpoint is used to return patients related to customer,
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Patient'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.CustomerNotFoundResponse'
+      summary: get patients related to customer
+      tags:
+      - patient
+  /customer/create:
+    post:
+      consumes:
+      - application/json
+      description: this endpoint is used to create a new customer,
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCustomerBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateSuccessfulResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.CustomerAlreadyExistsResponse'
+      summary: create a new customer
+      tags:
+      - create
+  /customer/get/{id}:
+    get:
+      consumes:
+      - application/json
+      description: this endpoint is used to return a customer,
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CustomerDB'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.CustomerNotFoundResponse'
+      summary: get customer
+      tags:
+      - get
+  /customer/modify:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        this endpoint is used to modify existing customer
+        NOTE ALL PARAMETERS as strings!
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ModifySuccessfulResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ModifyFailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.CustomerNotFoundResponse'
+      summary: modify customer
+      tags:
+      - Modify
+  /customer/remove/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: this endpoint is used to remove existing customer,
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CustomerRemovedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.CustomerNotFoundResponse'
+      summary: remove customer
+      tags:
+      - remove
+  /customer/search/{input}:
+    get:
+      consumes:
+      - application/json
+      description: this endpoint is used to search customer,
+      parameters:
+      - description: search parameter
+        in: path
+        name: input
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CustomerSearchBody'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.CustomerNotFoundResponse'
+      summary: find customer and return id,firstname and lastname
+      tags:
+      - search
+schemes:
+- http
+swagger: "2.0"

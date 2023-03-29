@@ -1,0 +1,208 @@
+basePath: /
+definitions:
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.StaffAddJSON:
+    properties:
+      first_name:
+        example: Elon
+        type: string
+      last_name:
+        example: Musk
+        type: string
+      role:
+        example: Lääkäri
+        type: string
+    type: object
+  models.StaffDB:
+    properties:
+      first_name:
+        example: Elon
+        type: string
+      id:
+        type: integer
+      last_name:
+        example: Musk
+        type: string
+      role:
+        $ref: '#/definitions/sql.NullString'
+    type: object
+  models.StaffJSON:
+    properties:
+      first_name:
+        example: Elon
+        type: string
+      id:
+        type: integer
+      last_name:
+        example: Musk
+        type: string
+      role:
+        example: Lääkäri
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+  sql.NullString:
+    properties:
+      string:
+        type: string
+      valid:
+        description: Valid is true if String is not NULL
+        type: boolean
+    type: object
+host: localhost:5007
+info:
+  contact: {}
+  description: |-
+    This App is used to control the staff. It can:
+    - Add a new staff
+    - Get all staff
+    - Delete the staff
+    - Modify the staff
+  title: Huovet staff API
+  version: "1.0"
+paths:
+  /staff/addStaff:
+    post:
+      consumes:
+      - application/json
+      description: Insert new staff to the staff table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.StaffAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StaffDB'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new staff to database
+      tags:
+      - Staff
+  /staff/deleteStaff/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the staff.
+      parameters:
+      - description: Staff ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete staff information
+      tags:
+      - Staff
+  /staff/getAllStaff:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of all staff.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search success
+          schema:
+            items:
+              $ref: '#/definitions/models.StaffDB'
+            type: array
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return all staff information
+      tags:
+      - Staff
+  /staff/modifyStaff:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the staff.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.StaffJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update staff information
+      tags:
+      - Staff
+schemes:
+- http
+swagger: "2.0"

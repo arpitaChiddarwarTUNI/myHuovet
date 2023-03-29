@@ -1,0 +1,347 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to control the diagnosis. It can:\n- Add a new diagnosis\n- Get the diagnosis\n- Delete the diagnosis\n- Modify the diagnosis",
+        "title": "Huovet diagnosis API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5006",
+    "basePath": "/",
+    "paths": {
+        "/diagnosis/addDiagnosis": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Insert new Diagnosis to the Diagnosis table in Huovet schema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Diagnosis"
+                ],
+                "summary": "Add new Diagnosis to database",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DiagnosisAddJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.DiagnosisJSON"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/diagnosis/deleteDiagnosis/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove all the information of the Diagnosis.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Diagnosis"
+                ],
+                "summary": "Delete Diagnosis information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Diagnosis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Deleting fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteFAilResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/diagnosis/getAllDiagnosis/": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the all Diagnosis and releated breeds",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Diagnosis"
+                ],
+                "summary": "Returns all Diagnosis",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.DiagnosisDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/diagnosis/getDiagnosis/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of the Diagnosis.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Diagnosis"
+                ],
+                "summary": "Return Diagnosis information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Diagnosis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.DiagnosisDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/diagnosis/modifyDiagnosis": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the information of the Diagnosis.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Diagnosis"
+                ],
+                "summary": "Update Diagnosis information",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DiagnosisJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.DeleteFAilResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "deleting fail"
+                }
+            }
+        },
+        "models.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "delete success"
+                }
+            }
+        },
+        "models.DiagnosisAddJSON": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "abc"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "fever"
+                }
+            }
+        },
+        "models.DiagnosisDB": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "fever"
+                }
+            }
+        },
+        "models.DiagnosisJSON": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "abc"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "fever"
+                }
+            }
+        },
+        "models.SearchFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "searching fail"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "update success"
+                }
+            }
+        },
+        "sql.NullString": {
+            "type": "object",
+            "properties": {
+                "string": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if String is not NULL",
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

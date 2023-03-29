@@ -1,0 +1,377 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to control the patient. It can:\n- Add a new patient\n- Get the patient\n- Delete the patient\n- Modify the patient",
+        "title": "Huovet patient API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5001",
+    "basePath": "/",
+    "paths": {
+        "/patient/addPatient": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Insert new patient to the patient table in Huovet schema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Add new patient to database",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PatientAddJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PatientDB"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/deletePatient/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove all the information of the patient.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Delete patient information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Deleting fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteFAilResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/getPatient/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of the patient.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Return patient information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PatientDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/modifyPatient": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the information of the patient.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Update patient information",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PatientJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.DeleteFAilResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "deleting fail"
+                }
+            }
+        },
+        "models.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "delete success"
+                }
+            }
+        },
+        "models.PatientAddJSON": {
+            "type": "object",
+            "properties": {
+                "breedId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "customerId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "dateOfBirth": {
+                    "type": "string",
+                    "example": "2022-05-11"
+                },
+                "microchip": {
+                    "type": "string",
+                    "example": "abcdefg12345"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Puppe"
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "Male"
+                },
+                "weight": {
+                    "type": "integer",
+                    "example": 12
+                }
+            }
+        },
+        "models.PatientDB": {
+            "type": "object",
+            "properties": {
+                "breedId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "customerId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "dateOfBirth": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "microchip": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Puppe"
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "Male"
+                },
+                "weight": {
+                    "$ref": "#/definitions/sql.NullInt64"
+                }
+            }
+        },
+        "models.PatientJSON": {
+            "type": "object",
+            "properties": {
+                "breedId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "customerId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "dateOfBirth": {
+                    "type": "string",
+                    "example": "2022-05-11"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "microchip": {
+                    "type": "string",
+                    "example": "abcdefg12345"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Puppe"
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "Male"
+                },
+                "weight": {
+                    "type": "integer",
+                    "example": 12
+                }
+            }
+        },
+        "models.SearchFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "searching fail"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "update success"
+                }
+            }
+        },
+        "sql.NullInt64": {
+            "type": "object",
+            "properties": {
+                "int64": {
+                    "type": "integer"
+                },
+                "valid": {
+                    "description": "Valid is true if Int64 is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "sql.NullString": {
+            "type": "object",
+            "properties": {
+                "string": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if String is not NULL",
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

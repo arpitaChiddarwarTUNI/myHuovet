@@ -1,0 +1,885 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This App is used to control the appointment. It can:\n- Add a new appointment\n- Get the appointment by id\n- Get all appointments\n- Get all customer appintment by customerId\n- Delete the appointment\n- Modify the appointment\n- Set the appointment billed field to true",
+        "title": "Huovet appointment API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5003",
+    "basePath": "/",
+    "paths": {
+        "/appointment/addAppointment/{patientId}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Insert new appointment to the appointment table in Huovet schema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Appointment"
+                ],
+                "summary": "Add new appointment to database",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AppointmentAddJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Add success",
+                        "schema": {
+                            "$ref": "#/definitions/models.AddResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointment/billedAppointment/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the billed field to true.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Appointment"
+                ],
+                "summary": "Update appointment billed field to true",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointment/customerAppointments/{customerId}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of customer all appointments.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Appointment"
+                ],
+                "summary": "Return customer all appointments information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AppointmentDB"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointment/deleteAppointment/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove all the information of the appointment.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Appointment"
+                ],
+                "summary": "Delete appointment information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Deleting fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteFAilResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointment/getAppointment/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of the appointment.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Appointment"
+                ],
+                "summary": "Return appointment information",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Appointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetAppointmentDB"
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointment/listAllAppointment": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Return the information of all appointments.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Appointment"
+                ],
+                "summary": "Return array of all appointments information",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AppointmentDB"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Seacring fail",
+                        "schema": {
+                            "$ref": "#/definitions/models.SearchFailResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/appointment/modifyAppointment": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the information of the appointment.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Appointment"
+                ],
+                "summary": "Update appointment information",
+                "parameters": [
+                    {
+                        "description": "query body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AppointmentJSON"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update success",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "appointment is already billed",
+                        "schema": {
+                            "$ref": "#/definitions/models.AlreadyBilledResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "schema": {
+                            "$ref": "#/definitions/models.UnathenticatedResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.AddResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "add success"
+                }
+            }
+        },
+        "models.AlreadyBilledResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "appointment is already billed"
+                }
+            }
+        },
+        "models.AppointmentAddJSON": {
+            "type": "object",
+            "properties": {
+                "anamnesis": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "appointment_type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "arrived": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "billed": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "diagnosis": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DiagnosedJSON"
+                    }
+                },
+                "ending_date": {
+                    "type": "string",
+                    "example": "2022-10-21T10:00:00"
+                },
+                "examinations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ExaminationJSON"
+                    }
+                },
+                "length": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "operations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ExaminationJSON"
+                    }
+                },
+                "prescriptions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PrescribedJSON"
+                    }
+                },
+                "staff_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "starting_date": {
+                    "type": "string",
+                    "example": "2022-10-19T10:00:00"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "treatment": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "useds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UsedJSON"
+                    }
+                }
+            }
+        },
+        "models.AppointmentDB": {
+            "type": "object",
+            "properties": {
+                "anamnesis": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "appointment_type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "arrived": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "billed": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "customer_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "date_of_birth": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "ending_date": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "length": {
+                    "type": "integer",
+                    "example": 3
+                },
+                "name": {
+                    "type": "string",
+                    "example": "musti"
+                },
+                "patient_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "staff_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "starting_date": {
+                    "type": "string",
+                    "example": "2022-10-19T10:00:00"
+                },
+                "status": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "treatment": {
+                    "$ref": "#/definitions/sql.NullString"
+                }
+            }
+        },
+        "models.AppointmentJSON": {
+            "type": "object",
+            "properties": {
+                "anamnesis": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "appointment_type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "arrived": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "billed": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "diagnosis": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DiagnosedJSON"
+                    }
+                },
+                "ending_date": {
+                    "type": "string",
+                    "example": "2022-10-20T10:00:00"
+                },
+                "examinations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ExaminationJSON"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "length": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "operations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ExaminationJSON"
+                    }
+                },
+                "prescriptions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PrescribedJSON"
+                    }
+                },
+                "staff_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "starting_date": {
+                    "type": "string",
+                    "example": "2022-10-19T10:00:00"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "treatment": {
+                    "type": "string",
+                    "example": "example"
+                },
+                "useds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UsedJSON"
+                    }
+                }
+            }
+        },
+        "models.DeleteFAilResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "deleting fail"
+                }
+            }
+        },
+        "models.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "delete success"
+                }
+            }
+        },
+        "models.DiagnosedJSON": {
+            "type": "object",
+            "properties": {
+                "diagnosis_id": {
+                    "type": "integer"
+                },
+                "info_text": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ExaminationJSON": {
+            "type": "object",
+            "properties": {
+                "examination_type_id": {
+                    "type": "integer"
+                },
+                "result": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.GetAppointmentDB": {
+            "type": "object",
+            "properties": {
+                "anamnesis": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "appointment_type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "arrived": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "billed": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "customer_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "date_of_birth": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "diagnosis": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GetDiagnosed"
+                    }
+                },
+                "ending_date": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "examinations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GetExamination"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "length": {
+                    "type": "integer",
+                    "example": 3
+                },
+                "name": {
+                    "type": "string",
+                    "example": "musti"
+                },
+                "operations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GetExamination"
+                    }
+                },
+                "patient_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "prescriptions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GetPrescribed"
+                    }
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "staff_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "starting_date": {
+                    "type": "string",
+                    "example": "2022-10-19T10:00:00"
+                },
+                "status": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "treatment": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "useds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GetUsed"
+                    }
+                }
+            }
+        },
+        "models.GetDiagnosed": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 13
+                },
+                "diagnosis_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "info_text": {
+                    "type": "string",
+                    "example": "Kova kuume"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "kuume"
+                }
+            }
+        },
+        "models.GetExamination": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "example": "examination or operation"
+                },
+                "examination_type_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "examination_type_name": {
+                    "type": "string",
+                    "example": "röntgen"
+                },
+                "location": {
+                    "type": "string",
+                    "example": "tampere"
+                },
+                "price": {
+                    "type": "number",
+                    "example": 25
+                },
+                "result": {
+                    "type": "string",
+                    "example": "Riiki on"
+                }
+            }
+        },
+        "models.GetPrescribed": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 3
+                },
+                "dosage": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "medicine_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "burana"
+                },
+                "unit": {
+                    "type": "string",
+                    "example": "g"
+                }
+            }
+        },
+        "models.GetUsed": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "koiran ruoka"
+                },
+                "price": {
+                    "type": "number",
+                    "example": 4.5
+                },
+                "supplies_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "type": {
+                    "type": "string",
+                    "example": "food"
+                },
+                "unit": {
+                    "type": "string",
+                    "example": "pcs"
+                }
+            }
+        },
+        "models.PrescribedJSON": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "dosage": {
+                    "type": "integer"
+                },
+                "medicine_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.SearchFailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "searching fail"
+                }
+            }
+        },
+        "models.UnathenticatedResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "unauthenticated"
+                }
+            }
+        },
+        "models.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "update success"
+                }
+            }
+        },
+        "models.UsedJSON": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "supplies_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "sql.NullString": {
+            "type": "object",
+            "properties": {
+                "string": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if String is not NULL",
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

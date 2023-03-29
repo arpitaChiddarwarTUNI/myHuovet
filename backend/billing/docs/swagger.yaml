@@ -1,0 +1,265 @@
+basePath: /
+definitions:
+  models.Bill:
+    properties:
+      appointment_id:
+        example: 1
+        type: integer
+      bill_number:
+        example: 9876543
+        type: integer
+      due_date:
+        example: 2022-10-20T10:00:00
+        type: string
+      examinations:
+        items:
+          $ref: '#/definitions/models.GetExamination'
+        type: array
+      paid:
+        example: true
+        type: boolean
+      service_price:
+        example: 35
+        type: number
+      supplies:
+        items:
+          $ref: '#/definitions/models.GetSupply'
+        type: array
+    type: object
+  models.BillAddJSON:
+    properties:
+      appointment_id:
+        example: 1
+        type: integer
+      due_date:
+        example: 2022-10-20T10:00:00
+        type: string
+      examinations:
+        items:
+          $ref: '#/definitions/models.Examination'
+        type: array
+      paid:
+        example: true
+        type: boolean
+      service_price:
+        example: 35
+        type: number
+      supplies:
+        items:
+          $ref: '#/definitions/models.Supply'
+        type: array
+    type: object
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.Examination:
+    properties:
+      examination_type_id:
+        example: 1
+        type: integer
+      price:
+        example: 30.99
+        type: number
+    type: object
+  models.GetExamination:
+    properties:
+      examination_type_id:
+        example: 1
+        type: integer
+      name:
+        example: röntgen
+        type: string
+      price:
+        example: 30.99
+        type: number
+    type: object
+  models.GetSupply:
+    properties:
+      amount:
+        example: 3
+        type: integer
+      name:
+        example: laastari
+        type: string
+      price:
+        example: 3.5
+        type: number
+      supplies_id:
+        example: 1
+        type: integer
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.Supply:
+    properties:
+      amount:
+        example: 3
+        type: integer
+      price:
+        example: 3.5
+        type: number
+      supplies_id:
+        example: 1
+        type: integer
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+host: localhost:5013
+info:
+  contact: {}
+  description: |-
+    This App is used to control the bills. It can:
+    - Add a new bill
+    - Delete the bill
+    - Modify the bill
+    - Get the bill
+    - Get all bills
+  title: Huovet billing API
+  version: "1.0"
+paths:
+  /billing/addBill:
+    post:
+      consumes:
+      - application/json
+      description: Insert new bill to the billing table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BillAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Bill'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new bill to database
+      tags:
+      - Billing
+  /billing/deleteBill/{appointment_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the bill.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: appointment_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete bill information
+      tags:
+      - Billing
+  /billing/getBill/{appointment_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the information of the bill.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: appointment_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search success
+          schema:
+            items:
+              $ref: '#/definitions/models.Bill'
+            type: array
+        "400":
+          description: searching fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get bill information
+      tags:
+      - Billing
+  /billing/modifyBill:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the bill.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Bill'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update bill information
+      tags:
+      - Billing
+schemes:
+- http
+swagger: "2.0"

@@ -1,0 +1,158 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: auth
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+    - "3307:3306"
+    expose:
+      - "3306"
+    volumes:
+    - ./database/Create_tables.sql:/docker-entrypoint-initdb.d/Create_tables.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 5
+
+  auth:
+    build: ./auth
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./auth:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  patient:
+    build: ./patient
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./patient:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  customer:
+    build: ./customer
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./customer:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  appointment:
+    build: ./appointment
+    ports:
+      - "5003:5003"
+    volumes:
+      - ./appointment:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  species:
+    build: ./species
+    ports:
+      - "5004:5004"
+    volumes:
+      - ./species:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  breed:
+    build: ./breed
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./breed:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  medicine:
+    build: ./medicine
+    ports:
+      - "5006:5006"
+    volumes:
+      - ./medicine:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  staff:
+    build: ./staff
+    ports:
+      - "5007:5007"
+    volumes:
+      - ./staff:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  supply:
+    build: ./supply
+    ports:
+      - "5008:5008"
+    volumes:
+      - ./supply:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  appointment_type:
+    build: ./appointment_type
+    ports:
+      - "5009:5009"
+    volumes:
+      - ./appointment_type:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  examinationtype:
+    build: ./examinationtype
+    ports:
+      - "5010:5010"
+    volumes:
+      - ./examinationtype:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  diagnosis:
+    build: ./diagnosis
+    ports:
+      - "5011:5011"
+    volumes:
+      - ./diagnosis:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  template:
+    build: ./template
+    ports:
+      - "5012:5012"
+    volumes:
+      - ./template:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  billing:
+    build: ./billing
+    ports:
+      - "5013:5013"
+    volumes:
+      - ./billing:/usr/src/app
+    depends_on:
+      db:
+        condition: service_healthy

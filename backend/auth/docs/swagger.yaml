@@ -1,0 +1,200 @@
+basePath: /
+definitions:
+  models.IncorrectPasswordResponse:
+    properties:
+      message:
+        example: incorrect password
+        type: string
+    type: object
+  models.LoginFailResponse:
+    properties:
+      message:
+        example: login fail
+        type: string
+    type: object
+  models.LoginRequestBody:
+    properties:
+      email:
+        example: testi@tuni.fi
+        type: string
+      password:
+        example: qwerty
+        type: string
+    type: object
+  models.LoginSuccessResponse:
+    properties:
+      message:
+        example: login success
+        type: string
+    type: object
+  models.LogoutResponse:
+    properties:
+      message:
+        example: logout success
+        type: string
+    type: object
+  models.RegisterRequestBody:
+    properties:
+      email:
+        example: testi@tuni.fi
+        type: string
+      firstName:
+        example: Elon
+        type: string
+      lastName:
+        example: Musk
+        type: string
+      password:
+        example: qwerty
+        type: string
+    type: object
+  models.RegisterResponse:
+    properties:
+      message:
+        example: email is already in use
+        type: string
+    type: object
+  models.RegisterSuccessResponse:
+    properties:
+      message:
+        example: register success
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.User:
+    properties:
+      email:
+        example: testi@tuni.fi
+        type: string
+      firstName:
+        example: Elon
+        type: string
+      id:
+        example: 1
+        type: integer
+      lastName:
+        example: Musk
+        type: string
+    type: object
+  models.UserNotFoundResponse:
+    properties:
+      message:
+        example: user not found
+        type: string
+    type: object
+host: localhost:5000
+info:
+  contact: {}
+  description: |-
+    This App is used to authenticate the user. It can:
+    - Register a new user
+    - Login with user
+    - Get the information of the logged in user
+    - Log out of the user
+  title: Huovet authentication API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        This endpoint allows the user to log in. When the user logs in, a JWT is created in the cookie.
+        The cookie is valid for 24 hours.
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginSuccessResponse'
+        "400":
+          description: Incorrect password
+          schema:
+            $ref: '#/definitions/models.IncorrectPasswordResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.LoginFailResponse'
+      summary: Login with user
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Log out of the user and remove the cookie.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LogoutResponse'
+      summary: User logout
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Add a new user to database. Calculates a hash value from the user's password,
+        which is stored in the database instead of the password.
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterSuccessResponse'
+        "400":
+          description: Email is already in use
+          schema:
+            $ref: '#/definitions/models.RegisterResponse'
+      summary: register a new user
+      tags:
+      - Auth
+  /auth/user:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the logged in user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "401":
+          description: Unathenticated
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return user information
+      tags:
+      - Auth
+schemes:
+- http
+swagger: "2.0"

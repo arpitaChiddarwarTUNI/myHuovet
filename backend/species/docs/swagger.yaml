@@ -1,0 +1,205 @@
+basePath: /
+definitions:
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.SpeciesDB:
+    properties:
+      id:
+        type: integer
+      name:
+        example: Dog
+        type: string
+    type: object
+  models.SpeciesJSON:
+    properties:
+      name:
+        example: Dog
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+host: localhost:5004
+info:
+  contact: {}
+  description: |-
+    This App is used to interact with species. It can:
+    - Create new species
+    - remove species
+    - Modify existing species
+    - Get species
+    - Get all species and releated breeds
+  title: Huovet species API
+  version: "0.1"
+paths:
+  /species/addSpecies:
+    post:
+      consumes:
+      - application/json
+      description: Insert new species to the species table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SpeciesJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SpeciesDB'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new species to database
+      tags:
+      - species
+  /species/deleteSpecies/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the species.
+      parameters:
+      - description: Species ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete species information
+      tags:
+      - species
+  /species/getSpecies/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the species.
+      parameters:
+      - description: species ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SpeciesDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return species information
+      tags:
+      - species
+  /species/getSpeciesAll/:
+    get:
+      consumes:
+      - application/json
+      description: Return the all species and releated breeds
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SpeciesDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Returns all species
+      tags:
+      - species
+  /species/modifySpecies:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the species.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SpeciesDB'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update species information
+      tags:
+      - species
+schemes:
+- http
+swagger: "2.0"

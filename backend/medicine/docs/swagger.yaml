@@ -1,0 +1,240 @@
+basePath: /
+definitions:
+  models.DeleteFAilResponse:
+    properties:
+      message:
+        example: deleting fail
+        type: string
+    type: object
+  models.DeleteResponse:
+    properties:
+      message:
+        example: delete success
+        type: string
+    type: object
+  models.MedicineAddJSON:
+    properties:
+      active_substance:
+        example: ibuprofein
+        type: string
+      name:
+        example: burana
+        type: string
+      strength:
+        example: 400 mg
+        type: string
+      unit:
+        example: ml
+        type: string
+    type: object
+  models.MedicineDB:
+    properties:
+      active_substance:
+        example: ibuprofein
+        type: string
+      id:
+        type: integer
+      name:
+        example: burana
+        type: string
+      strength:
+        example: 400 mg
+        type: string
+      unit:
+        example: ml
+        type: string
+    type: object
+  models.MedicineJSON:
+    properties:
+      active_substance:
+        example: ibuprofein
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: burana
+        type: string
+      strength:
+        example: 400 mg
+        type: string
+      unit:
+        example: ml
+        type: string
+    type: object
+  models.SearchFailResponse:
+    properties:
+      message:
+        example: searching fail
+        type: string
+    type: object
+  models.UnathenticatedResponse:
+    properties:
+      message:
+        example: unauthenticated
+        type: string
+    type: object
+  models.UpdateResponse:
+    properties:
+      message:
+        example: update success
+        type: string
+    type: object
+host: localhost:5006
+info:
+  contact: {}
+  description: |-
+    This App is used to control the medicine. It can:
+    - Add a new medicine
+    - Get the medicine
+    - Delete the medicine
+    - Modify the medicine
+  title: Huovet medicine API
+  version: "1.0"
+paths:
+  /medicine/addMedicine:
+    post:
+      consumes:
+      - application/json
+      description: Insert new Medicine to the Medicine table in Huovet schema.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MedicineAddJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MedicineJSON'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add new Medicine to database
+      tags:
+      - Medicine
+  /medicine/deleteMedicine/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove all the information of the Medicine.
+      parameters:
+      - description: Medicine ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete success
+          schema:
+            $ref: '#/definitions/models.DeleteResponse'
+        "400":
+          description: Deleting fail
+          schema:
+            $ref: '#/definitions/models.DeleteFAilResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Medicine information
+      tags:
+      - Medicine
+  /medicine/getAllMedicine/:
+    get:
+      consumes:
+      - application/json
+      description: Return the all Medicine and releated breeds
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MedicineDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Returns all Medicine
+      tags:
+      - Medicine
+  /medicine/getMedicine/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Return the information of the Medicine.
+      parameters:
+      - description: Medicine ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MedicineDB'
+        "400":
+          description: Seacring fail
+          schema:
+            $ref: '#/definitions/models.SearchFailResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Return Medicine information
+      tags:
+      - Medicine
+  /medicine/modifyMedicine:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the Medicine.
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MedicineJSON'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update success
+          schema:
+            $ref: '#/definitions/models.UpdateResponse'
+        "401":
+          description: Unauthentication
+          schema:
+            $ref: '#/definitions/models.UnathenticatedResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Medicine information
+      tags:
+      - Medicine
+schemes:
+- http
+swagger: "2.0"
